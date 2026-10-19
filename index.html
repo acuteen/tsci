@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tecnicatura Superior en Comercio Internacional - ISPP N° 2</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* Cambia INITIAL_THEME en el script para elegir la paleta del sitio. */
+        :root {
+            --color-primary: #12304a;
+            --color-primary-surface: #12304a;
+            --color-accent: #176b87;
+            --color-gold: #e3a12f;
+            --color-bg-light: #f2f7fa;
+            --color-card-bg: #ffffff;
+            --color-text-main: #172b3a;
+            --color-text-muted: #5d7180;
+            --color-border: #d9e4ea;
+            --color-soft-bg: #e5f0f5;
+            --radius-card: 16px;
+        }
+
+        :root[data-theme="green"] {
+            --color-primary: #123d35;
+            --color-primary-surface: #123d35;
+            --color-accent: #16836e;
+            --color-gold: #d4a72c;
+            --color-bg-light: #f2f7f3;
+            --color-card-bg: #ffffff;
+            --color-text-main: #20342f;
+            --color-text-muted: #61746d;
+            --color-border: #dce7e0;
+            --color-soft-bg: #e5f1ea;
+        }
+
+        :root[data-theme="terracotta"] {
+            --color-primary: #482c2a;
+            --color-primary-surface: #482c2a;
+            --color-accent: #b65d45;
+            --color-gold: #d49a3a;
+            --color-bg-light: #faf4f0;
+            --color-card-bg: #ffffff;
+            --color-text-main: #382b29;
+            --color-text-muted: #796a64;
+            --color-border: #eaddd5;
+            --color-soft-bg: #f2e5dc;
+        }
+
+        :root[data-theme="violet"] {
+            --color-primary: #312a4d;
+            --color-primary-surface: #312a4d;
+            --color-accent: #6954a1;
+            --color-gold: #d6a650;
+            --color-bg-light: #f6f4fa;
+            --color-card-bg: #ffffff;
+            --color-text-main: #2f2d39;
+            --color-text-muted: #716d7f;
+            --color-border: #e4e0ed;
+            --color-soft-bg: #ede9f5;
+        }
+
+        :root[data-mode="dark"] {
+            --color-primary: #e3edf3;
+            --color-primary-surface: #101b24;
+            --color-bg-light: #111a22;
+            --color-card-bg: #1b2832;
+            --color-text-main: #e7eef2;
+            --color-text-muted: #b0bec7;
+            --color-border: #354550;
+            --color-soft-bg: #243640;
+        }
+
+        /* ==========================================================================
+           ESTILOS BASE (Utilizan las variables de arriba)
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--color-bg-light);
+            color: var(--color-text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- Header & Navigation --- */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: var(--color-card-bg);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0.5rem 0rem 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            margin-bottom: -37px;
+            height: 110px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-title {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--color-primary);
+            letter-spacing: -0.3px;
+            line-height: 1.1;
+        }
+
+        .brand-sub {
+            font-size: 0.75rem;
+            color: var(--color-accent);
+            font-weight: 600;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .theme-toggle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            border: 1px solid var(--color-border);
+            border-radius: 50%;
+            background: transparent;
+            color: var(--color-text-main);
+            cursor: pointer;
+        }
+
+        .theme-toggle svg {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.7;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--color-accent);
+        }
+
+        .theme-toggle .sun-icon,
+        :root[data-mode="dark"] .theme-toggle .moon-icon {
+            display: none;
+        }
+
+        :root[data-mode="dark"] .theme-toggle .sun-icon {
+            display: block;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--color-text-muted);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: var(--color-accent);
+        }
+
+        .btn-cta-nav {
+            background: var(--color-accent);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 99px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+
+        .btn-cta-nav:hover {
+            opacity: 0.9;
+        }
+
+        .btn-cta-nav:active {
+            transform: scale(0.97);
+        }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: var(--color-primary);
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            position: relative;
+            padding: 3rem 1.2rem 8rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .hero-logo-container {
+            position: absolute;
+            padding: 5px;
+            bottom: -60px;
+            left: 50%;
+            width: 130px;
+            max-width: calc(100vw - 2.4rem);
+            aspect-ratio: 1;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: var(--color-primary-surface);
+            transform: translateX(-50%);
+        }
+
+        .hero-logo {
+            width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--color-soft-bg);
+            color: var(--color-accent);
+            padding: 0.4rem 1rem;
+            border-radius: 99px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1.15;
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+            letter-spacing: -0.8px;
+        }
+
+        .hero-title span {
+            color: var(--color-accent);
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            color: var(--color-text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: var(--color-accent);
+            color: white;
+            padding: 0.9rem 1.8rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--color-card-bg);
+            color: var(--color-primary);
+            border: 1px solid var(--color-border);
+            padding: 0.9rem 1.8rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-cards-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .stat-card {
+            background: var(--color-card-bg);
+            padding: 1.5rem;
+            border-radius: var(--radius-card);
+            border: 1px solid var(--color-border);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        }
+
+        .stat-card .num {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--color-accent);
+            margin-bottom: 0.2rem;
+        }
+
+        .stat-card .label {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            font-weight: 600;
+        }
+
+        /* --- Global Impact Banner --- */
+        .banner-quote {
+            background: var(--color-primary-surface);
+            color: white;
+            padding: 3.5rem 1.2rem;
+            text-align: center;
+        }
+
+        .banner-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .banner-tag {
+            color: var(--color-gold);
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 0.8rem;
+        }
+
+        .banner-quote h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .banner-quote p {
+            opacity: 0.85;
+            font-size: 1.05rem;
+        }
+
+        /* --- Sections Layout --- */
+        .section {
+            padding: 4rem 1.2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .section-subtitle {
+            color: var(--color-accent);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--color-primary);
+            margin-top: 0.3rem;
+        }
+
+        /* Grid Layouts */
+        .about-grid,
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .card-box {
+            background: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+            padding: 2rem;
+            border-radius: var(--radius-card);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+        }
+
+        .card-box h3 {
+            font-size: 1.3rem;
+            color: var(--color-primary);
+            margin-bottom: 0.8rem;
+        }
+
+        .card-box p {
+            color: var(--color-text-muted);
+            font-size: 0.98rem;
+            margin-bottom: 1rem;
+        }
+
+        /* --- Curriculum / Plan de Estudios --- */
+        .curriculum-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .year-card {
+            background: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-card);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .year-header {
+            background: var(--color-primary-surface);
+            color: white;
+            padding: 1.2rem 1.5rem;
+        }
+
+        .year-header h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .subject-list {
+            list-style: none;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .subject-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.92rem;
+            color: var(--color-text-main);
+            font-weight: 500;
+        }
+
+        .subject-item::before {
+            content: "✓";
+            color: var(--color-accent);
+            font-weight: 800;
+        }
+
+        /* --- Form & Contact --- */
+        .contact-container {
+            background: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-card);
+            padding: 2.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.88rem;
+            margin-bottom: 0.4rem;
+            color: var(--color-primary);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: 10px;
+            background: var(--color-card-bg);
+            color: var(--color-text-main);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: var(--color-accent);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn-submit {
+            background: var(--color-accent);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 0.9rem;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-submit:hover {
+            opacity: 0.9;
+        }
+
+        /* --- Footer --- */
+        footer {
+            background: var(--color-primary-surface);
+            color: white;
+            padding: 3rem 1.2rem 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        footer p {
+            opacity: 0.8;
+            margin-bottom: 0.5rem;
+        }
+
+        /* --- Responsive Styles --- */
+        @media (max-width: 900px) {
+
+            .hero,
+            .about-grid,
+            .profile-grid,
+            .curriculum-grid,
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            .nav-menu {
+                position: fixed;
+                top: 65px;
+                left: 0;
+                right: 0;
+                background: var(--color-card-bg);
+                flex-direction: column;
+                padding: 1.5rem;
+                border-bottom: 1px solid var(--color-border);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+                display: none;
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .btn-cta-nav {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header / Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo-container">
+                <img src="logo.png" alt="Logo TSCI ISPP 2" class="logo-img"
+                    onerror="this.src='https://cdn.prod.website-files.com/66ebd84f452424a46bebca78/66ec026338a4b427c14e8fb0_LOGO-DEGRADE.png'">
+                <div class="brand-text">
+                    <span class="brand-title">Instituto Superior del</span>
+                    <span class="brand-title">Profesorado Provincial N° 2</span>
+                    <span class="brand-sub">Frías - Sgo del Estero.</span>
+                </div>
+            </a>
+            <button class="mobile-toggle" id="menuToggle" aria-label="Abrir menú">☰</button>
+
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#about" class="nav-link">Quiénes Somos</a></li>
+                <li><a href="#profile" class="nav-link">Perfil del Egresado</a></li>
+                <li><a href="#curriculum" class="nav-link">Plan de Estudios</a></li>
+                <li>
+                    <button type="button" class="theme-toggle" id="themeToggle" aria-label="Cambiar a modo oscuro"
+                        aria-pressed="false">
+                        <svg class="moon-icon" aria-hidden="true" viewBox="0 0 24 24">
+                            <path d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z"></path>
+                        </svg>
+                        <svg class="sun-icon" aria-hidden="true" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="4"></circle>
+                            <path d="M12 2v2"></path>
+                            <path d="M12 20v2"></path>
+                            <path d="m4.93 4.93 1.42 1.42"></path>
+                            <path d="m17.65 17.65 1.42 1.42"></path>
+                            <path d="M2 12h2"></path>
+                            <path d="M20 12h2"></path>
+                            <path d="m6.35 17.65-1.42 1.42"></path>
+                            <path d="m19.07 4.93-1.42 1.42"></path>
+                        </svg>
+                    </button>
+                </li>
+                <li><a href="#contact" class="btn-cta-nav">Contáctate</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div>
+            <div class="hero-badge">🎓 Carrera Superior Oficial</div>
+            <h1 class="hero-title">TECNICATURA SUPERIOR EN <span>COMERCIO INTERNACIONAL</span></h1>
+            <p class="hero-description">Desde tu ciudad al mundo: impulsa el comercio global con nuestra tecnicatura.
+                Adquirí un perfil único en tiempo récord a costo CERO.</p>
+            <div class="hero-actions">
+                <a href="#contact" class="btn-primary">¡Inscríbete ahora!</a>
+                <a href="#about" class="btn-secondary">Saber más</a>
+            </div>
+        </div>
+
+        <div class="hero-cards-container">
+            <div class="stat-card">
+                <div class="num">3 Años</div>
+                <div class="label">Duración de la carrera</div>
+            </div>
+            <div class="stat-card">
+                <div class="num">Costo $0</div>
+                <div class="label">Educación pública gratuita</div>
+            </div>
+            <div class="stat-card">
+                <div class="num">+25 Años</div>
+                <div class="label">Trayectoria institucional</div>
+            </div>
+            <div class="stat-card">
+                <div class="num">100%</div>
+                <div class="label">Título Oficial</div>
+            </div>
+        </div>
+        <div class="hero-logo-container">
+            <img src="logo_white_WoBg.png" alt="Logo institucional" class="hero-logo">
+        </div>
+    </section>
+
+    <!-- Banner Destacado -->
+    <section class="banner-quote">
+        <div class="banner-container">
+            <div class="banner-tag">Visión Institucional</div>
+            <h2>Pensamiento Global, Impacto Local</h2>
+            <p>Creemos que una mente abierta al mundo puede generar cambios significativos a nivel local. Formamos a
+                nuestros estudiantes para que sean ciudadanos globales, con la capacidad de impulsar el desarrollo en
+                sus propias comunidades.</p>
+        </div>
+    </section>
+
+    <!-- Quiénes Somos -->
+    <section class="section" id="about">
+        <div class="section-header">
+            <span class="section-subtitle">Acerca de</span>
+            <h2 class="section-title">Quiénes Somos</h2>
+        </div>
+        <div class="about-grid">
+            <div>
+                <div class="card-box">
+                    <p>El <strong>ISPP N.º 2</strong> es una institución con más de 25 años de historia educativa,
+                        formando docentes y técnicos en la ciudad de Frías y de localidades en provincias vecinas como
+                        Catamarca y Tucumán.</p>
+                    <p>Esta casa de estudios cuenta con un calificado grupo de profesionales docentes con formación
+                        superior y universitaria, la mayoría con formación de posgrado, comprometidos con la excelencia
+                        académica y la formación técnica aplicada al desarrollo de la región.</p>
+                </div>
+            </div>
+            <div class="card-box" style="background: var(--color-soft-bg); border-color: var(--color-border);">
+                <h3>🏛️ Compromiso Regional</h3>
+                <p>Ubicados estratégicamente en la ciudad de Frías, conectamos a los estudiantes con las dinámicas de
+                    inserción comercial, exportación e importación, preparando recursos humanos claves para el
+                    crecimiento productivo regional e internacional.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Perfil del Egresado -->
+    <section class="section" id="profile" style="background: var(--color-soft-bg); border-radius: 24px;">
+        <div class="section-header">
+            <span class="section-subtitle">El perfil que moldeamos</span>
+            <h2 class="section-title">Lo que hacemos / Perfil del Egresado</h2>
+        </div>
+
+        <div class="profile-grid">
+            <div class="card-box">
+                <h3>🌐 Competencias Profesionales</h3>
+                <p>En nuestra Tecnicatura Superior en Comercio Internacional, formamos profesionales con las
+                    herramientas necesarias para enfrentar los desafíos del comercio global.</p>
+                <p>El egresado estará capacitado para gestionar sistemáticamente operaciones de importación y
+                    exportación, clasificar mercaderías según la nomenclatura arancelaria, coordinar cadenas de
+                    logística global y desarrollar análisis de mercado.</p>
+            </div>
+            <div class="card-box">
+                <h3>💼 Campo Laboral</h3>
+                <p>El Técnico Superior en Comercio Internacional puede desempeñarse en:</p>
+                <ul style="list-style-type: none; line-height: 2;">
+                    <li>🔹 Empresas exportadoras e importadoras.</li>
+                    <li>🔹 Agencias de Despacho de Aduana y carga internacional.</li>
+                    <li>🔹 Asesorías e intermediaciones comerciales.</li>
+                    <li>🔹 Entidades bancarias y financieras internacionales.</li>
+                    <li>🔹 Organismos públicos de promoción comercial.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Plan de Estudios -->
+    <section class="section" id="curriculum">
+        <div class="section-header">
+            <span class="section-subtitle">Estructura Académica</span>
+            <h2 class="section-title">Plan de Estudios</h2>
+        </div>
+
+        <div class="curriculum-grid">
+            <!-- 1° Año -->
+            <div class="year-card">
+                <div class="year-header">
+                    <h3>1.º Año</h3>
+                </div>
+                <ul class="subject-list">
+                    <li class="subject-item">Inglés</li>
+                    <li class="subject-item">Tecnología de la Información y la comunicación</li>
+                    <li class="subject-item">Teoría de las Organizaciones y de la Administración.</li>
+                    <li class="subject-item">Economía</li>
+                    <li class="subject-item">Derecho Civil y Comercial</li>
+                    <li class="subject-item">Matemática</li>
+                    <li class="subject-item">Sistema de Información Contable</li>
+                </ul>
+            </div>
+
+            <!-- 2° Año -->
+            <div class="year-card">
+                <div class="year-header">
+                    <h3>2.º Año</h3>
+                </div>
+                <ul class="subject-list">
+                    <li class="subject-item">Estadística</li>
+                    <li class="subject-item">Matemática Financiera</li>
+                    <li class="subject-item">Derecho Internacional</li>
+                    <li class="subject-item">Derecho Aduanero</li>
+                    <li class="subject-item">Comercio Internacional</li>
+                    <li class="subject-item">Práctica Profesionalizante I</li>
+                </ul>
+            </div>
+
+            <!-- 3° Año -->
+            <div class="year-card">
+                <div class="year-header">
+                    <h3>3.º Año</h3>
+                </div>
+                <ul class="subject-list">
+                    <li class="subject-item">Comercialización Internacional</li>
+                    <li class="subject-item">Costos y Precios en el Comercio Internacional</li>
+                    <li class="subject-item">Operaciones de Comercio Internacional</li>
+                    <li class="subject-item">Transporte y Logística Internacional</li>
+                    <li class="subject-item">Práctica Profesionalizante II</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Contacto -->
+    <section class="section" id="contact">
+        <div class="section-header">
+            <span class="section-subtitle">¿Listo para comenzar?</span>
+            <h2 class="section-title">Contáctate con Nosotros</h2>
+        </div>
+
+        <div class="contact-container">
+            <div>
+                <h3>Envíanos tu consulta</h3>
+                <p style="color: var(--color-text-muted); margin-bottom: 1.5rem;">Déjanos tus datos e inquietudes y te
+                    responderemos a la brevedad con la información de inscripción.</p>
+
+                <form action="mailto:ispp2frias@gmail.com" method="post" enctype="text/plain">
+                    <div class="form-group">
+                        <label for="nombre">Nombre y Apellido</label>
+                        <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Ej. Ana Pérez"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Correo Electrónico</label>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="nombre@correo.com"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mensaje">Consulta o Mensaje</label>
+                        <textarea id="mensaje" name="mensaje" class="form-control"
+                            placeholder="Estoy interesado/a en la carrera..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit">Enviar Mensaje</button>
+                </form>
+            </div>
+
+            <div
+                style="display: flex; flex-direction: column; justify-content: center; gap: 1.5rem; background: var(--color-bg-light); padding: 1.5rem; border-radius: 12px;">
+                <div>
+                    <h4 style="color: var(--color-primary); margin-bottom: 0.3rem;">📍 Ubicación Institucional</h4>
+                    <p style="color: var(--color-text-muted); font-size: 0.95rem;">Frías, Santiago del Estero,
+                        Argentina.</p>
+                </div>
+                <div>
+                    <h4 style="color: var(--color-primary); margin-bottom: 0.3rem;">✉️ Correo Oficial</h4>
+                    <p style="color: var(--color-text-muted); font-size: 0.95rem;">ispp2frias@gmail.com</p>
+                </div>
+                <div>
+                    <h4 style="color: var(--color-primary); margin-bottom: 0.3rem;">🎓 Modalidad</h4>
+                    <p style="color: var(--color-text-muted); font-size: 0.95rem;">Presencial - Formación Gratuita
+                        Oficial.</p>
+                </div>
+                <a href="https://wa.me/+543854486254?text=Hola,%20quisiera%20recibir%20informaci%C3%B3n%20sobre%20la%20Tecnicatura%20en%20Comercio%20Internacional"
+                    target="_blank" class="btn-primary" style="background: #25d366; text-align: center;">💬 Consulta por
+                    WhatsApp</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <img src="logo_white_WoBg.png" alt="Logo institucional"
+            style="display: block; max-width: 118px; height: auto; margin: 0 auto 0.3rem;">
+        <p><strong>Instituto Superior del Profesorado Provincial (I.S.P.P.) N.º 2 </strong></p>
+        <p>Tecnicatura Superior en Comercio Internacional - Frías, Santiago del Estero</p>
+        <p style="font-size: 0.8rem; margin-top: 1rem; opacity: 0.7;">© 2026 Promocion y divulgación de carrera - Todos
+            los derechos reservados.</p>
+    </footer>
+
+    <!-- Script Menu Movil -->
+    <script>
+        const INITIAL_THEME = 'ocean';
+        const MODE_STORAGE_KEY = 'tsci-color-mode';
+        const themeToggle = document.getElementById('themeToggle');
+        const savedMode = localStorage.getItem(MODE_STORAGE_KEY);
+        const activeMode = savedMode === 'dark' ? 'dark' : 'light';
+
+        document.documentElement.dataset.theme = INITIAL_THEME;
+        document.documentElement.dataset.mode = activeMode;
+        themeToggle.setAttribute('aria-pressed', String(activeMode === 'dark'));
+        themeToggle.setAttribute('aria-label', activeMode === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
+
+        themeToggle.addEventListener('click', () => {
+            const isDarkMode = document.documentElement.dataset.mode !== 'dark';
+            const mode = isDarkMode ? 'dark' : 'light';
+            document.documentElement.dataset.mode = mode;
+            themeToggle.setAttribute('aria-pressed', String(isDarkMode));
+            themeToggle.setAttribute('aria-label', isDarkMode ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
+            localStorage.setItem(MODE_STORAGE_KEY, mode);
+        });
+
+        const menuToggle = document.getElementById('menuToggle');
+        const navMenu = document.getElementById('navMenu');
+
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.nav-link, .btn-cta-nav').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+
+</html>
