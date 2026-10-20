@@ -403,6 +403,10 @@
             margin: 0 auto;
         }
 
+        #contact {
+            padding: 4rem 0.5rem;
+        }
+
         .section-header {
             margin-bottom: 2.5rem;
         }
@@ -506,7 +510,7 @@
             background: var(--color-card-bg);
             border: 1px solid var(--color-border);
             border-radius: var(--radius-card);
-            padding: 2.5rem;
+            padding: 0.5rem;
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 2rem;
@@ -586,6 +590,7 @@
             .curriculum-grid,
             .contact-container {
                 grid-template-columns: 1fr;
+                padding: 0.5rem;
             }
 
             .hero-title {
@@ -865,8 +870,10 @@
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3500!2d-65.13!3d-28.64!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f4.1!3m3!1m2!1s0x9425a84f49ae19cf%3A0xc20209a4b0458105!2s9VF8%2BQF%2C%20Fr%C3%ADas%2C%20Santiago%20del%20Estero!5e0!3m2!1ses!2sar!4v1650000000000">
                         </iframe>
                     </div>
-                    <h4 style="color: var(--color-primary); margin-bottom: 0.3rem; margin-top: 1rem;">📍 Ubicación Institucional</h4>
-                    <p style="color: var(--color-text-muted); font-size: 0.95rem;">1° de Mayo Esq. España, Frías, Santiago del Estero,
+                    <h4 style="color: var(--color-primary); margin-bottom: 0.3rem; margin-top: 1rem;">📍 Ubicación
+                        Institucional</h4>
+                    <p style="color: var(--color-text-muted); font-size: 0.95rem;">1° de Mayo Esq. España, Frías,
+                        Santiago del Estero,
                         Argentina.</p>
                 </div>
                 <div>
@@ -898,23 +905,92 @@
     <!-- Script Menu Movil -->
     <script>
         const INITIAL_THEME = 'ocean';
-        const MODE_STORAGE_KEY = 'tsci-color-mode';
         const themeToggle = document.getElementById('themeToggle');
-        const savedMode = localStorage.getItem(MODE_STORAGE_KEY);
-        const activeMode = savedMode === 'dark' ? 'dark' : 'light';
-
         document.documentElement.dataset.theme = INITIAL_THEME;
-        document.documentElement.dataset.mode = activeMode;
-        themeToggle.setAttribute('aria-pressed', String(activeMode === 'dark'));
-        themeToggle.setAttribute('aria-label', activeMode === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
+        let automaticMode = true;
+        let visitorLocation = null;
+        themeToggle.title = 'Tema automático según la luz solar. Pulsa para cambiarlo manualmente hasta la próxima visita.';
 
-        themeToggle.addEventListener('click', () => {
-            const isDarkMode = document.documentElement.dataset.mode !== 'dark';
-            const mode = isDarkMode ? 'dark' : 'light';
+        function setMode(mode) {
+            const isDarkMode = mode === 'dark';
             document.documentElement.dataset.mode = mode;
             themeToggle.setAttribute('aria-pressed', String(isDarkMode));
             themeToggle.setAttribute('aria-label', isDarkMode ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
-            localStorage.setItem(MODE_STORAGE_KEY, mode);
+        }
+
+        function isNightAtLocation(date, latitude, longitude) {
+            const julianDate = date.getTime() / 86400000 + 2440587.5;
+            const century = (julianDate - 2451545) / 36525;
+            const meanLongitude = ((280.46646 + century * (36000.76983 + century * 0.0003032)) % 360 + 360) % 360;
+            const meanAnomaly = (357.52911 + century * (35999.05029 - 0.0001537 * century)) * Math.PI / 180;
+            const eccentricity = 0.016708634 - century * (0.000042037 + 0.0000001267 * century);
+            const equationOfCenter = (
+                Math.sin(meanAnomaly) * (1.914602 - century * (0.004817 + 0.000014 * century)) +
+                Math.sin(2 * meanAnomaly) * (0.019993 - 0.000101 * century) +
+                Math.sin(3 * meanAnomaly) * 0.000289
+            );
+            const omega = (125.04 - 1934.136 * century) * Math.PI / 180;
+            const apparentLongitude = (meanLongitude + equationOfCenter - 0.00569 - 0.00478 * Math.sin(omega)) * Math.PI / 180;
+            const meanObliquity = 23 + (26 + (21.448 - century * (46.815 + century * (0.00059 - century * 0.001813))) / 60) / 60;
+            const obliquity = (meanObliquity + 0.00256 * Math.cos(omega)) * Math.PI / 180;
+            const declination = Math.asin(Math.sin(obliquity) * Math.sin(apparentLongitude));
+            const y = Math.tan(obliquity / 2) ** 2;
+            const longitudeRadians = meanLongitude * Math.PI / 180;
+            const equationOfTime = 4 * 180 / Math.PI * (
+                y * Math.sin(2 * longitudeRadians) -
+                2 * eccentricity * Math.sin(meanAnomaly) +
+                4 * eccentricity * y * Math.sin(meanAnomaly) * Math.cos(2 * longitudeRadians) -
+                0.5 * y * y * Math.sin(4 * longitudeRadians) -
+                1.25 * eccentricity * eccentricity * Math.sin(2 * meanAnomaly)
+            );
+            const utcMinutes = date.getUTCHours() * 60 + date.getUTCMinutes() + date.getUTCSeconds() / 60;
+            const solarMinutes = ((utcMinutes + equationOfTime + 4 * longitude) % 1440 + 1440) % 1440;
+            const hourAngle = (solarMinutes / 4 - 180) * Math.PI / 180;
+            const latitudeRadians = latitude * Math.PI / 180;
+            const sineElevation =
+                Math.sin(latitudeRadians) * Math.sin(declination) +
+                Math.cos(latitudeRadians) * Math.cos(declination) * Math.cos(hourAngle);
+            const elevation = Math.asin(Math.max(-1, Math.min(1, sineElevation))) * 180 / Math.PI;
+
+            return elevation <= -0.833;
+        }
+
+        function updateAutomaticMode() {
+            if (!automaticMode) return;
+
+            const now = new Date();
+            const isNight = visitorLocation
+                ? isNightAtLocation(now, visitorLocation.latitude, visitorLocation.longitude)
+                : now.getHours() < 7 || now.getHours() >= 19;
+            setMode(isNight ? 'dark' : 'light');
+        }
+
+        updateAutomaticMode();
+        window.setInterval(updateAutomaticMode, 60000);
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                ({ coords }) => {
+                    visitorLocation = {
+                        latitude: coords.latitude,
+                        longitude: coords.longitude
+                    };
+                    themeToggle.title = 'Tema automático según la luz solar. Pulsa para cambiarlo manualmente hasta la próxima visita.';
+                    updateAutomaticMode();
+                },
+                (error) => {
+                    themeToggle.title = error.code === error.PERMISSION_DENIED
+                        ? 'No se autorizó la ubicación; se usa un horario local aproximado. Pulsa para cambiar el tema manualmente.'
+                        : 'No se pudo obtener la ubicación; se usa un horario local aproximado. Pulsa para cambiar el tema manualmente.';
+                },
+                { enableHighAccuracy: false, maximumAge: 3600000, timeout: 10000 }
+            );
+        }
+
+        themeToggle.addEventListener('click', () => {
+            automaticMode = false;
+            const isDarkMode = document.documentElement.dataset.mode !== 'dark';
+            setMode(isDarkMode ? 'dark' : 'light');
         });
 
         const menuToggle = document.getElementById('menuToggle');
